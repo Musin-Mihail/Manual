@@ -1,5 +1,5 @@
 using UnityEngine;
-public class TransformСhildCount : MonoBehaviour
+public class TransformChildCount : MonoBehaviour
 {
     void Start()
     {
