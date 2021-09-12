@@ -1,0 +1,49 @@
+-------------------------------------------
+using UnityEngine;
+using UnityEngine.UI;
+public class ObjectToString : MonoBehaviour
+{
+    public Text text;
+    void Start()
+    {
+        int number = 12345;
+        text.text = number.ToString();
+    }
+}
+-------------------------------------------
+using UnityEngine;
+using UnityEngine.UI;
+public class ObjectToString : MonoBehaviour
+{
+    public Text text;
+    public GameObject go;
+    void Start()
+    {
+        text.text = go.ToString();
+    }
+}
+--------------------------------------------
+using UnityEngine;
+using UnityEngine.UI;
+public class ObjectToString : MonoBehaviour
+{
+    public Text text;
+    public GameObject go;
+    void Start()
+    {
+        text.text = go.name.ToString();
+    }
+}
+--------------------------------------------
+using UnityEngine;
+using UnityEngine.UI;
+public class ObjectToString : MonoBehaviour
+{
+    public Text text;
+    void Start()
+    {
+        Vector3 vector = new Vector3(1.5f,0,56.456f);
+        text.text = vector.ToString();
+    }
+}
+--------------------------------------------

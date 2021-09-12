@@ -1,0 +1,56 @@
+-------------------------------------------
+using UnityEngine;
+public class ObjectInstantiate : MonoBehaviour
+{
+    public GameObject prefab;
+    void Start()
+    {
+        Instantiate(prefab);
+    }
+}
+-------------------------------------------
+using UnityEngine;
+public class ObjectInstantiate : MonoBehaviour
+{
+    public GameObject prefab;
+    public GameObject parent;
+    void Start()
+    {
+        Instantiate(prefab, parent.transform);
+    }
+}
+-------------------------------------------
+using UnityEngine;
+public class ObjectInstantiate : MonoBehaviour
+{
+    public GameObject prefab;
+    public GameObject parent;
+    void Start()
+    {
+        Instantiate(prefab, parent.transform, false);
+    }
+}
+--------------------------------------------
+using UnityEngine;
+public class ObjectInstantiate : MonoBehaviour
+{
+    public GameObject prefab;
+    public Transform _transform;
+    void Start()
+    {
+        Vector3 vector = new Vector3 (1,2,3);
+        Instantiate(prefab, vector, _transform.rotation);
+    }
+}
+--------------------------------------------
+using UnityEngine;
+public class ObjectInstantiate : MonoBehaviour
+{
+    public GameObject prefab;
+    void Start()
+    {
+        Vector3 vector = new Vector3 (1,2,3);
+        Instantiate(prefab, vector, Quaternion.identity);
+    }
+}
+--------------------------------------------
