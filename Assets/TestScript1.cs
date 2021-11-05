@@ -3,6 +3,6 @@ public class TestScript1 : MonoBehaviour
 {
     void Test(float value)
     {
-        print("1 - " + value);
+        print(transform.name + " - " + value);
     }
 }
