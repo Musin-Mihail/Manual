@@ -13,6 +13,8 @@ public class Line : MonoBehaviour
     float sumlerpLine2;
     float coefficient;
     int countLine2;
+    int countLine3;
+    Vector3 point1;
     public Transform object1;
     public Transform object2;
     public Transform object3;
@@ -24,8 +26,7 @@ public class Line : MonoBehaviour
         parentLine1.GetComponentsInChildren<Transform>(line1);
 
         RefreshLine2();
-
-        parentLine2.GetComponentsInChildren<Transform>(line3);
+        RefreshLine3();
 
         value = 0;
         StartCoroutine(PlusValue());
@@ -50,6 +51,20 @@ public class Line : MonoBehaviour
         }
         sum = 0;
         sumlerpLine2 = 0;
+    }
+    void RefreshLine3()
+    {
+        parentLine3.GetComponentsInChildren<Transform>(line3);
+        countLine3 = line3.Count;
+        // float sumDistans = 0;
+        // for (int i = 1; i < line3.Count-2; i++)
+        // {
+        //     sumDistans += Vector3.Distance();
+        // }
+        // foreach (var item in line3)
+        // {
+
+        // }
     }
     void LerpLine1()
     {
@@ -82,6 +97,31 @@ public class Line : MonoBehaviour
             }
         }
     }
+    void LerpLine3()
+    {
+        List<Vector3> list = new List<Vector3>();
+        for (int i = 1; i < line3.Count - 1; i++)
+        {
+            list.Add(Vector3.Lerp(line3[i].position, line3[i + 1].position, value));
+        }
+        Lerp2Line3(list);
+    }
+    void Lerp2Line3(List<Vector3> list2)
+    {
+        if (list2.Count > 2)
+        {
+            List<Vector3> list = new List<Vector3>();
+            for (int i = 0; i < list2.Count - 1; i++)
+            {
+                list.Add(Vector3.Lerp(list2[i], list2[i + 1], value));
+            }
+            Lerp2Line3(list);
+        }
+        else
+        {
+            object3.position = Vector3.Lerp(list2[0], list2[1], value);
+        }
+    }
     IEnumerator PlusValue()
     {
         while (value <= 1)
@@ -105,20 +145,62 @@ public class Line : MonoBehaviour
     }
     void Move()
     {
-        if (parentLine2.childCount != countLine2)
+        if (parentLine2.childCount != countLine2-1)
         {
             RefreshLine2();
         }
+        if (parentLine3.childCount != countLine3-1)
+        {
+            RefreshLine3();
+        }
         LerpLine1();
         LerpLine2();
-        DrawLine();
+        LerpLine3();
+        DrawLine1();
+        DrawLine2();
+        DrawLine3();
     }
-    void DrawLine()
+    void DrawLine1()
     {
         Debug.DrawLine(line1[1].position, line1[2].position, Color.red, 0.01f);
+    }
+    void DrawLine2()
+    {
         for (int i = 1; i < line2.Count - 1; i++)
         {
             Debug.DrawLine(line2[i].position, line2[i + 1].position, Color.red, 0.01f);
+        }
+    }
+    void DrawLine3()
+    {
+        point1 = line3[1].position;
+        for (float t = 0; t < 1; t += 0.01f)
+        {
+            List<Vector3> list = new List<Vector3>();
+            for (int i = 1; i < line3.Count - 1; i++)
+            {
+                list.Add(Vector3.Lerp(line3[i].position, line3[i + 1].position, t));
+            }
+            Draw2Line3(list, t);
+        }
+    }
+    void Draw2Line3(List<Vector3> list2, float value4)
+    {
+        if (list2.Count > 2)
+        {
+            List<Vector3> list = new List<Vector3>();
+            for (int i = 0; i < list2.Count - 1; i++)
+            {
+                list.Add(Vector3.Lerp(list2[i], list2[i + 1], value4));
+            }
+            Draw2Line3(list, value4);
+        }
+        else
+        {
+            Vector3 point2 = Vector3.Lerp(list2[0], list2[1], value4);
+            Debug.DrawLine(point1, point2, Color.red, 0.01f);
+            point1 = point2;
+            // Debug.DrawLine(list2[0], list2[1], Color.red, 0.01f);
         }
     }
 }
