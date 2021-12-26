@@ -4,17 +4,16 @@ using UnityEngine;
 public class Line : MonoBehaviour
 {
     [Range(0, 1)] public float value;
-    public List<Transform> line1;
-    public List<Transform> line2;
-    public List<Transform> line3;
-    public List<float> distansLine2;
-    public List<float> lerpLine2;
+    List<Transform> line1;
+    List<Transform> line2;
+    List<Transform> line3;
+    List<float> distansLine2;
+    List<float> lerpLine2;
     float sumlerpLine2;
     float coefficientLine2;
     int countLine2;
     int countLine3;
     Vector3 point1;
-    public List<Vector3> newLine3;
     public Transform object1;
     public Transform object2;
     public Transform object3;
@@ -23,7 +22,11 @@ public class Line : MonoBehaviour
     public Transform parentLine3;
     void Start()
     {
-        newLine3 = new List<Vector3>();
+        lerpLine2 = new List<float>();
+        distansLine2 = new List<float>();
+        line1 = new List<Transform>();
+        line2 = new List<Transform>();
+        line3 = new List<Transform>();
         parentLine1.GetComponentsInChildren<Transform>(line1);
 
         RefreshLine2();
@@ -36,8 +39,8 @@ public class Line : MonoBehaviour
     {
         parentLine2.GetComponentsInChildren<Transform>(line2);
         countLine2 = line2.Count;
-        distansLine2.Clear();
         lerpLine2.Clear();
+        distansLine2.Clear();
         float sumDistanceLine2 = 0;
         for (int i = 1; i < line2.Count - 1; i++)
         {
@@ -53,46 +56,10 @@ public class Line : MonoBehaviour
         }
         sumlerpLine2 = 0;
     }
-    public void RefreshLine3()
+    void RefreshLine3()
     {
         parentLine3.GetComponentsInChildren<Transform>(line3);
         countLine3 = line3.Count;
-        Vector3 point1 = line3[0].position;
-        newLine3.Clear();
-        newLine3.Add(point1);
-        for (float t = 0; t < 1; t += 0.01f)
-        {
-            List<Vector3> list = new List<Vector3>();
-            for (int i = 1; i < line3.Count - 1; i++)
-            {
-                list.Add(Vector3.Lerp(line3[i].position, line3[i + 1].position, t));
-            }
-            Refresh2Line3(list, t);
-        }
-        newLine3.Add(line3[line3.Count-1].position);
-        print(newLine3.Count);
-    }
-    public void Refresh2Line3(List<Vector3> list2, float t)
-    {
-        if (list2.Count > 2)
-        {
-            List<Vector3> list = new List<Vector3>();
-            for (int i = 0; i < list2.Count - 1; i++)
-            {
-                list.Add(Vector3.Lerp(list2[i], list2[i + 1], t));
-            }
-            Refresh2Line3(list, t);
-        }
-        else
-        {
-            Vector3 point2 = Vector3.Lerp(list2[0], list2[1], t);
-            float distance = Vector3.Distance(point1, point2);
-            if (distance > 0.5f)
-            {
-                point1 = point2;
-                newLine3.Add(point1);
-            }
-        }
     }
     void LerpLine1()
     {
@@ -128,9 +95,9 @@ public class Line : MonoBehaviour
     void LerpLine3()
     {
         List<Vector3> list = new List<Vector3>();
-        for (int i = 1; i < newLine3.Count - 1; i++)
+        for (int i = 1; i < line3.Count - 1; i++)
         {
-            list.Add(Vector3.Lerp(newLine3[i], newLine3[i + 1], value));
+            list.Add(Vector3.Lerp(line3[i].position, line3[i + 1].position, value));
         }
         Lerp2Line3(list);
     }
