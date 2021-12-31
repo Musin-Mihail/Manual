@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class List : MonoBehaviour
+public class ManualList : MonoBehaviour
 {
     public Text text1;
     void Start()
@@ -38,8 +38,31 @@ public class List : MonoBehaviour
         // Example27(); // List<T>.FindLastIndex(Predicate<T>) - Поиск последнего индекса где элемент соответствует условию.
         // Example28(); // List<T>.FindLastIndex(Int32, Predicate<T>) - Поиск последнего индекса где элемент соответствует условию, заканчивая данным индексом.
         // Example29(); // List<T>.FindLastIndex(Int32, Int32, Predicate<T>) - Поиск последнего индекса где элемент соответствует условию, указывая последний индекс и сколько последних элементов проверить.
-        // Example10(); // BinarySearch(T) - Поиск индекса с данным значением.
-        // Example10(); // BinarySearch(T) - Поиск индекса с данным значением.
+        // Example30(); // List<T>.ForEach(Action<T>) - Перебор всех значений используя сторонний метод.
+        // Example31(); // List<T>.GetEnumerator - Получение перечислителя.
+        // Example32(); // List<T>.GetHashCode - Получение HashCode.
+        // Example33(); // List<T>.Contains(T) - Скопирование части списка. От какого индекса и сколько элементов.
+        // Example34(); // List<T>.GetType - Получить тип.
+        // Example35(); // List<T>.IndexOf(T) - Вывод первого индекса с данным значением.
+        // Example36(); // List<T>.IndexOf(T, Int32) - Вывод первого индекса с данным значением начиная с указанного индекса.
+        // Example37(); // List<T>.IndexOf(T, Int32, Int32) - Вывод первого индекса с данным значением начиная с указанного индекса.и сколько элементов проверить.
+        // Example38(); // List<T>.Insert(Int32, T) - Вставляет элемент на указанный индекс.
+        // Example39(); // List<T>.InsertRange(Int32, IEnumerable<T>) - Вставляет список на указанный индекс.
+        // Example40(); // List<T>.LastIndexOf(T) - Вывод последнего индекса с указанным элементом.
+        // Example41(); // List<T>.LastIndexOf(T, Int32) - Вывод последнего индекса с указанным элементом. Начиная с первого индекса до указанного.
+        // Example42(); // List<T>.LastIndexOf(T, Int32, Int32) - Вывод последнего индекса с указанным элементом. Заканчивая указанным индексом и сколько элементов.
+        //////////////// Example43(); // List<T>.MemberwiseClone - Создаёт какую-то копию.
+        // Example44(); // List<T>.Remove(T) - Удаляет элемент соответствующий объекту.
+        // Example45(); // List<T>.RemoveAll(Predicate<T>) - Удаляет все элементы соответствующие условию.
+        // Example46(); // List<T>.RemoveAt(Int32) - Удаляет элемент под нужным индексом.
+        // Example47(); // List<T>.RemoveRange(Int32, Int32) - С какого индекса и сколько элементов удалить.
+        // Example48(); // List<T>.Reverse() - Переворачивает списко.
+        // Example49(); // List<T>.Reverse(Int32, Int32) - Переворачивает списко в диапозоне. От какого индекса и сколько элементов.
+        // Example50(); // Sort() - Сортировка по умолчанию.
+        // Example51(); // Sort(Comparison<T>) - Сортирует список используя Comparison.
+        // Example52(); // Sort(IComparer<T>) - Сортирует список используя IComparer.
+        // Example53(); // Sort(Int32, Int32, IComparer<T>) - Сортирует список используя IComparer. От какого индекса и сколько элементов.
+        // Example54(); // List<T>.ToArray - Копирует список в массив.
     }
     void Example1()
     {
@@ -528,8 +551,376 @@ public class List : MonoBehaviour
     }
     void Example30()
     {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(3);
+        list1.Add(5);
+        list1.ForEach(Print);
+        list1.ForEach(delegate (int value) { text1.text += value + "\n"; });
     }
+    void Print(int value)
+    {
+        text1.text += value + "\n";
+    }
+    void Example31()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(3);
+        list1.Add(5);
+        List<int>.Enumerator em = list1.GetEnumerator();
+        while (em.MoveNext())
+        {
+            int value = em.Current;
+            text1.text += value + "\n";
+        }
+    }
+    void Example32()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(3);
+        list1.Add(5);
+        text1.text += list1.GetHashCode() + "\n";
+    }
+    void Example33()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(3);
+        list1.Add(5);
+        List<int> list2;
+        list2 = new List<int>(3);
+        list2 = list1.GetRange(1, 3);
+        foreach (var item in list2)
+        {
+            text1.text += item + "\n";
+        }
+    }
+    void Example34()
+    {
+        List<int> list1;
+        list1 = new List<int>(3);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        text1.text += list1.GetType() + "\n";
+    }
+    void Example35()
+    {
+        List<int> list1;
+        list1 = new List<int>(3);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        var index = list1.IndexOf(4);
+        text1.text += index + "\n";
+    }
+    void Example36()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        var index = list1.IndexOf(3, 2);
+        text1.text += index + "\n";
+    }
+    void Example37()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        var index = list1.IndexOf(5, 2, 2);
+        text1.text += index + "\n";
+    }
+    void Example38()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        list1.Insert(1, 6);
+        foreach (var item in list1)
+        {
+            text1.text += item + "\n";
+        }
+    }
+    void Example39()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        List<int> list2;
+        list2 = new List<int>(3);
+        list2.Add(6);
+        list2.Add(7);
+        list2.Add(8);
+        list1.InsertRange(1, list2);
+        foreach (var item in list1)
+        {
+            text1.text += item + "\n";
+        }
+    }
+    void Example40()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        text1.text += list1.LastIndexOf(4) + "\n";
+    }
+    void Example41()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        text1.text += list1.LastIndexOf(5, 3) + "\n";
+    }
+    void Example42()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        text1.text += list1.LastIndexOf(2, 4, 3) + "\n";
+    }
+    void Example43()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        // print(list1.MemberwiseClone());
 
+        print(this.MemberwiseClone());
+    }
+    void Example44()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        bool bool1 = list1.Remove(4);
+        text1.text += bool1 + "\n";
+        foreach (var item in list1)
+        {
+            text1.text += item + "\n";
+        }
+        bool1 = list1.Remove(6);
+        text1.text += bool1 + "\n";
+    }
+    void Example45()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        // list1.RemoveAll(x => x > 3);
+        list1.RemoveAll(Delete);
+        foreach (var item in list1)
+        {
+            text1.text += item + "\n";
+        }
+    }
+    bool Delete(int value)
+    {
+        return value > 3;
+    }
+    void Example46()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        list1.RemoveAt(1);
+        foreach (var item in list1)
+        {
+            text1.text += item + "\n";
+        }
+    }
+    void Example47()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        list1.RemoveRange(1, 3);
+        foreach (var item in list1)
+        {
+            text1.text += item + "\n";
+        }
+    }
+    void Example48()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        list1.Reverse();
+        foreach (var item in list1)
+        {
+            text1.text += item + "\n";
+        }
+    }
+    void Example49()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        list1.Reverse(1, 3);
+        foreach (var item in list1)
+        {
+            text1.text += item + "\n";
+        }
+    }
+    void Example50()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        list1.Sort();
+        foreach (var item in list1)
+        {
+            text1.text += item + "\n";
+        }
+    }
+    void Example51()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        list1.Sort(delegate (int x, int y)
+        {
+            if (x == y)
+            {
+                return 0;
+            }
+            else if (x > y)
+            {
+                return 1;
+            }
+            else
+            {
+                return -1;
+            }
+        });
+        foreach (var item in list1)
+        {
+            text1.text += item + "\n";
+        }
+    }
+    void Example52()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        Sorting sort = new Sorting();
+        list1.Sort(sort);
+        foreach (var item in list1)
+        {
+            text1.text += item + "\n";
+        }
+    }
+    void Example53()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        Sorting sort = new Sorting();
+        list1.Sort(1, 3, sort);
+        foreach (var item in list1)
+        {
+            text1.text += item + "\n";
+        }
+    }
+    void Example54()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        int[] array1;
+        array1 = list1.ToArray();
+        foreach (var item in array1)
+        {
+            text1.text += item + "\n";
+        }
+    }
 
 
     // text1.text += "------\n";
