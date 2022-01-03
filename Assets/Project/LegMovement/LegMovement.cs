@@ -5,34 +5,34 @@ public class LegMovement : MonoBehaviour
 {
     public Transform body;
     public Transform leg;
+    public Transform target;
     int layerMask = 1 << 6;
+    Vector3 oldLegVector = Vector3.zero;
     void Start()
     {
-        StartCoroutine(LegCheckGround());
+        // StartCoroutine(LegCheckGround());
     }
     IEnumerator LegCheckGround()
     {
-        Vector3 oldVector = Vector3.zero;
-        Vector3 oldPositionBody = body.position;
+        RaycastHit _hit;
+        Vector3 legTarget;
         while (true)
         {
-            yield return new WaitForSeconds(0.1f);
-            RaycastHit _hit;
-            if (Physics.Raycast(transform.position, Vector3.down, out _hit, Mathf.Infinity, layerMask))
+            if (Vector3.Distance(transform.position, leg.position) > 2.5f)
             {
-                float distance = Vector3.Distance(_hit.point, oldVector);
-
-                if (distance > 1.0f)
+                legTarget = transform.position + (target.position - transform.position).normalized;
+                if (Physics.Raycast(legTarget + Vector3.up * 10, Vector3.down, out _hit, Mathf.Infinity, layerMask))
                 {
-                    oldVector = _hit.point - (oldPositionBody - body.position).normalized;
-                    oldPositionBody = body.position;
-                    while (leg.position != oldVector)
+                    oldLegVector = _hit.point;
+                    while (leg.position != _hit.point)
                     {
-                        leg.position = Vector3.MoveTowards(leg.position, oldVector, 0.2f);
+                        Debug.DrawLine(leg.position, _hit.point, Color.green, 1);
+                        leg.position = Vector3.MoveTowards(leg.position, _hit.point, 0.2f);
                         yield return new WaitForSeconds(0.01f);
                     }
                 }
             }
+            yield return new WaitForSeconds(0.1f);
         }
     }
 }
