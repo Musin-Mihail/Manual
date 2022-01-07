@@ -26,6 +26,7 @@ public class BodyMovement : MonoBehaviour
         }
         StartCoroutine(LegCheckGround());
         StartCoroutine(MoveBody());
+        StartCoroutine(DrawLegs());
     }
     void Update()
     {
@@ -36,6 +37,7 @@ public class BodyMovement : MonoBehaviour
             transform.position = newBodyPositionY;
             for (int i = 0; i < legJoint2List.Count; i++)
             {
+                // float distanceLeg = Vector3.Distance(legList[i].position, legPoint[i].position);
                 Vector3 tempVector = Vector3.Lerp(legList[i].position, legPoint[i].position, 0.6f);
                 tempVector.y += 1.3f;
                 legJoint2List[i].position = tempVector;
@@ -46,10 +48,24 @@ public class BodyMovement : MonoBehaviour
             }
         }
     }
+    IEnumerator DrawLegs()
+    {
+        while (true)
+        {
+            for (int i = 0; i < legList.Count; i++)
+            {
+                Debug.DrawLine(legPoint[i].position, legJoint2List[i].position, Color.red, 0.01f);
+                Debug.DrawLine(legJoint2List[i].position, legJoint3List[i].position, Color.red, 0.01f);
+                Debug.DrawLine(legJoint3List[i].position, legList[i].position, Color.red, 0.01f);
+            }
+            yield return new WaitForSeconds(0.01f);
+        }
+    }
     IEnumerator MoveBody()
     {
         while (true)
         {
+
             yield return new WaitForSeconds(0.1f);
             transform.LookAt(target.position);
             Vector3 sumVector = Vector3.zero;
@@ -82,7 +98,9 @@ public class BodyMovement : MonoBehaviour
     IEnumerator MoveLeg(int index)
     {
         RaycastHit _hit;
-        if (Vector3.Distance(legJointList[index].position, legList[index].position) > 1.0f)
+        float distanceLeg = Vector3.Distance(legList[index].position, legPoint[index].position);
+
+        if (distanceLeg > 1.5f)
         {
             Vector3 legTarget = legJointList[index].position + (target.position - transform.position).normalized;
             if (Physics.Raycast(legTarget + Vector3.up * 10, Vector3.down, out _hit, Mathf.Infinity, layerMask))
@@ -99,15 +117,5 @@ public class BodyMovement : MonoBehaviour
             }
         }
         LegMoveCheck[index] = true;
-    }
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        for (int i = 0; i < legList.Count; i++)
-        {
-            Gizmos.DrawLine(legPoint[i].position, legJoint2List[i].position);
-            Gizmos.DrawLine(legJoint2List[i].position, legJoint3List[i].position);
-            Gizmos.DrawLine(legJoint3List[i].position, legList[i].position);
-        }
     }
 }
