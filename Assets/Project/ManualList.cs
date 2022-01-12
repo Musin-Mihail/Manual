@@ -62,8 +62,38 @@ public class ManualList : MonoBehaviour
         // Example51(); // Sort(Comparison<T>) - Сортирует список используя Comparison.
         // Example52(); // Sort(IComparer<T>) - Сортирует список используя IComparer.
         // Example53(); // Sort(Int32, Int32, IComparer<T>) - Сортирует список используя IComparer. От какого индекса и сколько элементов.
-        // Example54(); // List<T>.ToArray - Копирует список в массив.
+        // Example54(); // List<T>.ToArray() - Копирует список в массив.
+        // Example55(); // List<T>.ToString() - Переводит название типа в строку.
+        // Example56(); // List<T>.TrimExcess() - Устанавливает ёмкость равный количеству эллементов.
+        // Example57(); // List<T>.TrueForAll(Predicate<T>) - Соотвествуют все компоненты условию?
+        // Example58(); // List<T>.ICollection.CopyTo(Array, Int32) - Копирование элементов в массив. Начиная с какого индекса в массиве.
+        // Example59(); // List<T>.ICollection.IsSynchronized - Показывает, является ли доступ к коллекции ICollection синхронизированным (потокобезопасным).
+        // Example60(); // List<T>.ICollection.SyncRoot - Получает объект, который можно использовать для синхронизации доступа к коллекции ICollection.
+        // Example61(); // List<T>.ICollection<T>.IsReadOnly - Получает значение, показывающее, доступен ли ICollection <T> только для чтения.
+        // Example62(); // List<T>.IEnumerable.GetEnumerator - Возвращает перечислитель, который выполняет итерацию по коллекции.
+        // Example63(); // List<T>.IEnumerable<T>.GetEnumerator - Возвращает перечислитель, который перебирает коллекцию.
+        // Example64(); // List<T>.IList.Add(Object) - Добавляет элемент в список IList.
+        // Example65(); // List<T>.IList.Contains(Object) - Определяет, содержит ли IList определенное значение.
+        // Example66(); // List<T>.IList.IndexOf(Object) - Определяет индекс определенного элемента в списке IList.
+        // Example67(); // List<T>.IList.Insert(Int32, Object) - Вставляет элемент в список IList по указанному индексу.
+        // Example68(); // List<T>.IList.IsFixedSize - Получает значение, показывающее, имеет ли IList фиксированный размер.
+        // Example69(); // List<T>.IList.IsReadOnly - Получает значение, указывающее, доступен ли список IList только для чтения.
+        // Example70(); // List<T>.IList.Item[Int32] - Получает или задает элемент по указанному индексу.
+        Example71(); // List<T>.IList.Remove(Object) - Удаляет первое вхождение определенного объекта из списка IList ..
+        // Example72(); // List<T>.IList.Add(Object) - .
+        // Example73(); // List<T>.IList.Add(Object) - .
+        // Example74(); // List<T>.IList.Add(Object) - .
+        // Example75(); // List<T>.IList.Add(Object) - .
+        // Example76(); // List<T>.IList.Add(Object) - .
+        // Example77(); // List<T>.IList.Add(Object) - .
+        // Example78(); // List<T>.IList.Add(Object) - .
+        // Example79(); // List<T>.IList.Add(Object) - .
+        // Example80(); // List<T>.IList.Add(Object) - .
+
+
+
     }
+    #region Example 1-20
     void Example1()
     {
         List<int> list1;
@@ -425,6 +455,8 @@ public class ManualList : MonoBehaviour
         text1.text += "------\n";
         text1.text += list1.Exists(x => x > 3) + "\n";
     }
+    #endregion
+    #region Example 21-40
     void Example21()
     {
         List<int> list1;
@@ -700,6 +732,8 @@ public class ManualList : MonoBehaviour
         list1.Add(3);
         text1.text += list1.LastIndexOf(4) + "\n";
     }
+    #endregion
+    #region Example 41-60
     void Example41()
     {
         List<int> list1;
@@ -921,6 +955,243 @@ public class ManualList : MonoBehaviour
             text1.text += item + "\n";
         }
     }
+    void Example55()
+    {
+        List<int> list1;
+        list1 = new List<int>();
+        text1.text += list1.ToString();
+    }
+    void Example56()
+    {
+        List<int> list1;
+        list1 = new List<int>(2);
+        text1.text += list1.Capacity + "\n";
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        text1.text += list1.Capacity + "\n";
+        list1.TrimExcess();
+        text1.text += list1.Capacity + "\n";
+    }
+    void Example57()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        text1.text += list1.TrueForAll(Delete) + "\n";
+    }
+    void Example58()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        ICollection iCollection = new List<int>(list1);
+        int[] array1 = new int[10];
+        iCollection.CopyTo(array1, 1);
+        foreach (var item in array1)
+        {
+            text1.text += item + "\n";
+        }
+    }
+    void Example59()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        ICollection iCollection = new List<int>(list1);
+        text1.text += iCollection.IsSynchronized + "\n";
+    }
+    void Example60()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        ICollection iCollection = new List<int>(list1);
+        var test = iCollection.SyncRoot;
+        text1.text += iCollection.SyncRoot + "\n";
+        text1.text += test + "\n";
+    }
+    #endregion
+    void Example61()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        ICollection<int> iCollection = new List<int>(list1);
+        text1.text += iCollection.IsReadOnly + "\n";
+    }
+    void Example62()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        IEnumerable IEnumerable = new List<int>(list1);
+        var test1 = IEnumerable.GetEnumerator();
+        text1.text += test1 + "\n";
+    }
+    void Example63()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        IEnumerable<int> IEnumerable = new List<int>(list1);
+        var test1 = IEnumerable.GetEnumerator();
+        text1.text += test1 + "\n";
+    }
+    void Example64()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        IList ilist = new List<int>(list1);
+        ilist.Add(77);
+        foreach (var item in ilist)
+        {
+            text1.text += item + "\n";
+        }
+    }
+    void Example65()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        IList ilist = new List<int>(list1);
+        ilist.Add(77);
+        text1.text += ilist.Contains(77) + "\n";
+    }
+    void Example66()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        IList ilist = new List<int>(list1);
+        ilist.Add(77);
+        text1.text += ilist.IndexOf(77) + "\n";
+    }
+    void Example67()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        IList ilist = new List<int>(list1);
+        ilist.Insert(2, 77);
+        foreach (var item in ilist)
+        {
+            text1.text += item + "\n";
+        }
+    }
+    void Example68()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        IList ilist = new List<int>(list1);
+        text1.text += ilist.IsFixedSize + "\n";
+    }
+    void Example69()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        IList ilist = new List<int>(list1);
+        text1.text += ilist.IsReadOnly + "\n";
+    }
+    void Example70()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        IList ilist = new List<int>(list1);
+        text1.text += ilist[1] + "\n";
+        ilist[1] = 77;
+        text1.text += ilist[1] + "\n";
+    }
+    void Example71()
+    {
+        List<int> list1;
+        list1 = new List<int>(6);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+        list1.Add(4);
+        IList ilist = new List<int>(list1);
+        ilist.Remove(4);
+        foreach (var item in ilist)
+        {
+            text1.text += item + "\n";
+        }
+    }
+    void Example72()
+    {
+        List<int> list1;
+        list1 = new List<int>(5);
+        list1.Add(1);
+        list1.Add(4);
+        list1.Add(2);
+        list1.Add(5);
+        list1.Add(3);
+    }
+
 
 
     // text1.text += "------\n";
@@ -929,4 +1200,6 @@ public class ManualList : MonoBehaviour
     // {
     //     text1.text += i + " - " + list1[i] + "\n";
     // }
+    // int[] array1;
+    // array1 = list1.ToArray();
 }
