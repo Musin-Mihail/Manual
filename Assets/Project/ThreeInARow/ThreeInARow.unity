@@ -159,7 +159,7 @@ Terrain:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 190572695}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: c28f508fcd17f164aa92dda33127c326, type: 2}
   m_TreeDistance: 5000
@@ -606,14 +606,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec97292145ecc484e8928e3f7cb4ec7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startSphere: {fileID: 0}
-  endSphere: {fileID: 0}
-  listSphere: []
-  tempListSphere: []
-  prefabs:
-  - {fileID: 7749143204432209129, guid: 1e75797045833914c99067a48d47ea9f, type: 3}
-  - {fileID: 7678002144598956781, guid: 8b7eb695d1c098d468e6c8c7ebf3def4, type: 3}
-  - {fileID: 1758399730219227944, guid: ab0e95003b9668147b2090eb91dc26ea, type: 3}
+  prefab: {fileID: 7749143204432209129, guid: 1e75797045833914c99067a48d47ea9f, type: 3}
+  materials:
+  - {fileID: 2100000, guid: 1712fa2c4b00ed846b4e0ac0ba51e165, type: 2}
+  - {fileID: 2100000, guid: 4b940dcba780d9f4f8a912587e488631, type: 2}
+  - {fileID: 2100000, guid: 427cdbba0083b304295a2fc3f99653f0, type: 2}
+  layers: 070000000900000008000000
 --- !u!4 &1148684164
 Transform:
   m_ObjectHideFlags: 0

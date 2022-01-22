@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class ThreeInARow : MonoBehaviour
 {
-    public Transform startSphere;
-    public Transform endSphere;
-    public List<Transform> listSphere;
-    public List<Transform> tempListSphere;
-    public List<GameObject> prefabs;
+    List<Transform> listSphere;
+    List<Transform> tempListSphere;
+    List<Transform> newList = new List<Transform>();
+    public GameObject prefab;
+    public List<Material> materials;
+    public List<int> layers;
     public static float fps;
+    bool addSphere = false;
     void OnGUI()
     {
         fps = 1.0f / Time.deltaTime;
@@ -25,11 +27,10 @@ public class ThreeInARow : MonoBehaviour
         Application.targetFrameRate = 60;
         listSphere = new List<Transform>();
         tempListSphere = new List<Transform>();
-        StartCoroutine(CreateLine());
+        StartCoroutine(CreatePool());
     }
-    IEnumerator CreateLine()
+    IEnumerator CreatePool()
     {
-        // Добавить пул объектов
         yield return new WaitForSeconds(2);
         for (int i = 0; i < 10; i++)
         {
@@ -37,35 +38,76 @@ public class ThreeInARow : MonoBehaviour
             {
                 for (int x = -5; x <= 5; x++)
                 {
-                    float value = Random.Range(-0.1f, 0.1f);
-                    Vector3 vector = new Vector3(x, 5, z + value);
-                    int random = Random.Range(0, 3);
-                    if (random == 0)
-                    {
-                        CreateSphere(prefabs[0], vector);
-                    }
-                    else if (random == 1)
-                    {
-                        CreateSphere(prefabs[1], vector);
-                    }
-                    else if (random == 2)
-                    {
-                        CreateSphere(prefabs[2], vector);
-                    }
+                    Vector3 vector = new Vector3(x, 5, z);
+                    CreateSphere(vector);
                 }
             }
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(0.5f);
         }
-
+        addSphere = true;
+        // print("Start");
     }
-    void CreateSphere(GameObject prefab, Vector3 vector)
+    void CreateSphere(Vector3 vector)
     {
         GameObject sphere = Instantiate(prefab, vector, Quaternion.identity);
+        int random = Random.Range(0, 3);
+        sphere.GetComponent<MeshRenderer>().material = materials[random];
+        sphere.gameObject.layer = layers[random];
         listSphere.Add(sphere.transform);
+    }
+    IEnumerator OnSphere()
+    {
+        if (addSphere == true && newList.Count == 0)
+        {
+            addSphere = false;
+            foreach (var sphere in listSphere)
+            {
+                if (sphere.gameObject.activeSelf == false)
+                {
+                    newList.Add(sphere);
+                }
+            }
+            if (newList.Count > 0)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    if (newList.Count == 0)
+                    {
+                        break;
+                    }
+                    for (int z = -5; z <= 5; z++)
+                    {
+                        if (newList.Count == 0)
+                        {
+                            break;
+                        }
+                        for (int x = -5; x <= 5; x++)
+                        {
+                            if (newList.Count > 0)
+                            {
+                                Vector3 vector = new Vector3(x, 5, z);
+                                int random = Random.Range(0, 3);
+                                newList[0].GetComponent<MeshRenderer>().material = materials[random];
+                                newList[0].gameObject.layer = layers[random];
+                                newList[0].position = vector;
+                                newList[0].gameObject.SetActive(true);
+                                newList.RemoveAt(0);
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                    }
+                    yield return new WaitForSeconds(0.5f);
+                }
+            }
+            addSphere = true;
+        }
     }
     void Update()
     {
-
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit _hit;
@@ -75,6 +117,7 @@ public class ThreeInARow : MonoBehaviour
                 int layer = _hit.transform.gameObject.layer;
                 SearchNearestSphere(_hit.transform, layer);
                 tempListSphere.Clear();
+                StartCoroutine(OnSphere());
             }
         }
     }
@@ -102,7 +145,6 @@ public class ThreeInARow : MonoBehaviour
                 }
             }
         }
-        // добавить сферы из пула в замен отключённых.
         foreach (var sphere in tempListSphere)
         {
             sphere.gameObject.SetActive(false);
