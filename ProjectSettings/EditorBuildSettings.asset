@@ -5,13 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Manual.unity
     guid: 9b0fe78a1b4ea024988606fb2904d89e
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scene2.unity
     guid: 50b2a2a090ca1aa4394564a77ea7e55e
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scene1.unity
     guid: 213bcd31c3b312a4abef34151ccda7f8
+  - enabled: 1
+    path: Assets/Project/ThreeInARow/ThreeInARow.unity
+    guid: b3210667b96c1f5438ab2a3cc1b3d8db
   m_configObjects: {}
