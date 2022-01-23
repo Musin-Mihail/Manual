@@ -29,6 +29,21 @@ public class ThreeInARow : MonoBehaviour
         tempListSphere = new List<Transform>();
         StartCoroutine(CreatePool());
     }
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit _hit;
+            Ray _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(_ray, out _hit, Mathf.Infinity))
+            {
+                int layer = _hit.transform.gameObject.layer;
+                SearchNearestSphere(_hit.transform, layer);
+                tempListSphere.Clear();
+                StartCoroutine(OnSphere());
+            }
+        }
+    }
     IEnumerator CreatePool()
     {
         yield return new WaitForSeconds(2);
@@ -106,21 +121,7 @@ public class ThreeInARow : MonoBehaviour
             addSphere = true;
         }
     }
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            RaycastHit _hit;
-            Ray _ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(_ray, out _hit, Mathf.Infinity))
-            {
-                int layer = _hit.transform.gameObject.layer;
-                SearchNearestSphere(_hit.transform, layer);
-                tempListSphere.Clear();
-                StartCoroutine(OnSphere());
-            }
-        }
-    }
+    
     void SearchNearestSphere(Transform startPosition, int layer)
     {
         tempListSphere.Add(startPosition);
@@ -150,4 +151,9 @@ public class ThreeInARow : MonoBehaviour
             sphere.gameObject.SetActive(false);
         }
     }
+    public void Exit()
+    {
+        Application.Quit();
+    }
+
 }
