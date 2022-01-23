@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class ThreeInARow2 : MonoBehaviour
 {
@@ -13,8 +14,8 @@ public class ThreeInARow2 : MonoBehaviour
     float fps;
     public Transform StartPoint;
     public Transform FinishPoint;
-    int count2 = 1000;
     public int TESTTEST = 0;
+    public int maxCount = 15;
     void OnGUI()
     {
         fps = 1.0f / Time.deltaTime;
@@ -46,10 +47,7 @@ public class ThreeInARow2 : MonoBehaviour
                 else if (FinishPoint == null)
                 {
                     FinishPoint = _hit.transform;
-                    newList = new List<Transform>(listSphere);
-                    List<Transform> newList2 = new List<Transform>();
-                    SearchWay(StartPoint, 1, newList2);
-                    StartCoroutine(ColorSphere());
+                    StartSearch(FinishPoint);
                 }
             }
         }
@@ -62,9 +60,17 @@ public class ThreeInARow2 : MonoBehaviour
                 sphere.GetComponent<MeshRenderer>().material = materials[0];
             }
             wayList.Clear();
-            count2 = 1000;
             TESTTEST = 0;
+            maxCount = 15;
         }
+    }
+    void StartSearch(Transform transform)
+    {
+        // newList = new List<Transform>(listSphere);
+        newList = listSphere.OrderBy(x => Vector3.Distance(x.position, FinishPoint.position)).ToList();
+        List<Transform> newList2 = new List<Transform>();
+        SearchWay(StartPoint, 1, newList2);
+        StartCoroutine(ColorSphere());
     }
     IEnumerator ColorSphere()
     {
@@ -78,34 +84,29 @@ public class ThreeInARow2 : MonoBehaviour
     }
     void SearchWay(Transform startPosition, int count, List<Transform> listTransform)
     {
-        TESTTEST++;
-        if (count < 14)
+        count++;
+        if (count < maxCount && TESTTEST < 200000)
         {
-            count++;
-            if (count2 > count)
+            TESTTEST++;
+            List<Transform> temp = new List<Transform>();
+            for (int i = 0; i < newList.Count; i++)
             {
-                List<Transform> temp = new List<Transform>();
-                for (int i = 0; i < newList.Count; i++)
+                float distance1 = Vector3.Distance(startPosition.position, newList[i].position);
+                if (distance1 < 1.1f)
                 {
-                    float distance1 = Vector3.Distance(startPosition.position, newList[i].position);
-                    if (distance1 < 1.01f)
+                    if (newList[i] == FinishPoint)
                     {
-                        if (newList[i] == FinishPoint)
+                        maxCount = count;
+                        print("find");
+                        Compare(listTransform);
+                    }
+                    else
+                    {
+                        if (listTransform.Contains(newList[i]) == false)
                         {
-                            count2 = count;
-                            Compare(listTransform);
-                        }
-                        else
-                        {
-                            if (startPosition != newList[i])
-                            {
-                                if (listTransform.Contains(newList[i]) == false)
-                                {
-                                    List<Transform> newList2 = new List<Transform>(listTransform);
-                                    newList2.Add(newList[i]);
-                                    SearchWay(newList[i], count, newList2);
-                                }
-                            }
+                            List<Transform> newList2 = new List<Transform>(listTransform);
+                            newList2.Add(newList[i]);
+                            SearchWay(newList[i], count, newList2);
                         }
                     }
                 }
