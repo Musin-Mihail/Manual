@@ -6,15 +6,15 @@ public class ThreeInARow2 : MonoBehaviour
 {
     List<Transform> listSphere;
     public List<Transform> wayList;
+    public List<Transform> newList;
     public GameObject prefab;
     public List<Material> materials;
     public List<int> layers;
     float fps;
     public Transform StartPoint;
     public Transform FinishPoint;
-    int value = 1000;
-    List<Transform> tempList1 = new List<Transform>();
-    List<Transform> tempList2 = new List<Transform>();
+    int count2 = 1000;
+    public int TESTTEST = 0;
     void OnGUI()
     {
         fps = 1.0f / Time.deltaTime;
@@ -46,9 +46,10 @@ public class ThreeInARow2 : MonoBehaviour
                 else if (FinishPoint == null)
                 {
                     FinishPoint = _hit.transform;
-                    SearchWay(StartPoint);
+                    newList = new List<Transform>(listSphere);
+                    List<Transform> newList2 = new List<Transform>();
+                    SearchWay(StartPoint, 1, newList2);
                     StartCoroutine(ColorSphere());
-
                 }
             }
         }
@@ -60,106 +61,69 @@ public class ThreeInARow2 : MonoBehaviour
             {
                 sphere.GetComponent<MeshRenderer>().material = materials[0];
             }
-            value = 1000;
             wayList.Clear();
+            count2 = 1000;
+            TESTTEST = 0;
         }
     }
     IEnumerator ColorSphere()
     {
         foreach (var sphere in wayList)
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.05f);
             sphere.GetComponent<MeshRenderer>().material = materials[1];
         }
+        StartPoint.GetComponent<MeshRenderer>().material = materials[2];
+        FinishPoint.GetComponent<MeshRenderer>().material = materials[2];
     }
-    void SearchWay(Transform startPosition)
+    void SearchWay(Transform startPosition, int count, List<Transform> listTransform)
     {
-        List<Transform> temp = new List<Transform>();
-        foreach (var sphere in listSphere)
+        TESTTEST++;
+        if (count < 14)
         {
-            float distance1 = Vector3.Distance(startPosition.position, sphere.position);
-            if (distance1 < 1.01f)
+            count++;
+            if (count2 > count)
             {
-                if (sphere == FinishPoint)
+                List<Transform> temp = new List<Transform>();
+                for (int i = 0; i < newList.Count; i++)
                 {
-                    if (value > tempList1.Count)
+                    float distance1 = Vector3.Distance(startPosition.position, newList[i].position);
+                    if (distance1 < 1.01f)
                     {
-                        value = tempList1.Count;
-                        wayList = new List<Transform>(tempList1);
-                        wayList.Add(sphere);
-                        break;
-                    }
-                }
-                else
-                {
-                    temp.Add(sphere);
-                }
-            }
-        }
-        foreach (var sphere in temp)
-        {
-            // List<Transform> tempList2 = new List<Transform>(tempList1);
-            bool match = false;
-            foreach (var tempSphere in tempList1)
-            {
-                if (sphere == tempSphere)
-                {
-                    match = true;
-                }
-            }
-            if (match == false)
-            {
-                tempList1.Add(sphere);
-                sphere.GetComponent<MeshRenderer>().material = materials[2];
-                SearchWay2(sphere);
-            }
-        }
-    }
-    void SearchWay2(Transform startPosition)
-    {
-        //Доделать. Нужно удалять проверенный пусть. Как вариант, для каждого пути делать свой лист.
-        if (tempList1.Count < 5)
-        {
-            List<Transform> temp = new List<Transform>();
-            foreach (var sphere in listSphere)
-            {
-                float distance1 = Vector3.Distance(startPosition.position, sphere.position);
-                if (distance1 < 1.01f)
-                {
-                    if (sphere == FinishPoint)
-                    {
-                        if (value > tempList1.Count)
+                        if (newList[i] == FinishPoint)
                         {
-                            value = tempList1.Count;
-                            wayList = new List<Transform>(tempList1);
-                            return;
+                            count2 = count;
+                            Compare(listTransform);
+                        }
+                        else
+                        {
+                            if (startPosition != newList[i])
+                            {
+                                if (listTransform.Contains(newList[i]) == false)
+                                {
+                                    List<Transform> newList2 = new List<Transform>(listTransform);
+                                    newList2.Add(newList[i]);
+                                    SearchWay(newList[i], count, newList2);
+                                }
+                            }
                         }
                     }
-                    else
-                    {
-                        temp.Add(sphere);
-                    }
                 }
             }
-            foreach (var sphere in temp)
+        }
+    }
+    void Compare(List<Transform> listTransform)
+    {
+        if (wayList.Count != 0)
+        {
+            if (wayList.Count > listTransform.Count)
             {
-                tempList2 = new List<Transform>(tempList1);
-                bool match = false;
-                foreach (var tempSphere in tempList1)
-                {
-                    if (sphere == tempSphere)
-                    {
-                        match = true;
-                    }
-                }
-                if (match == false)
-                {
-                    // print(startPosition.name + " - " + sphere.name);
-                    tempList1.Add(sphere);
-                    sphere.GetComponent<MeshRenderer>().material = materials[2];
-                    SearchWay2(sphere);
-                }
+                wayList = new List<Transform>(listTransform);
             }
+        }
+        else
+        {
+            wayList = new List<Transform>(listTransform);
         }
     }
     IEnumerator CreatePool()
