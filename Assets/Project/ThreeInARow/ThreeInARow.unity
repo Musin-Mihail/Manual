@@ -705,13 +705,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4726a88a5e4d8ea4095280717f7332d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tempListSphere: []
+  wayList: []
   prefab: {fileID: 7749143204432209129, guid: 1e75797045833914c99067a48d47ea9f, type: 3}
   materials:
   - {fileID: 2100000, guid: 1712fa2c4b00ed846b4e0ac0ba51e165, type: 2}
   - {fileID: 2100000, guid: 4b940dcba780d9f4f8a912587e488631, type: 2}
   - {fileID: 2100000, guid: 427cdbba0083b304295a2fc3f99653f0, type: 2}
-  layers: 070000000900000008000000
   StartPoint: {fileID: 0}
   FinishPoint: {fileID: 0}
 --- !u!1 &1419221229

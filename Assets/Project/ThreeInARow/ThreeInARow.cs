@@ -39,6 +39,10 @@ public class ThreeInARow : MonoBehaviour
             {
                 int layer = _hit.transform.gameObject.layer;
                 SearchNearestSphere(_hit.transform, layer);
+                foreach (var sphere in tempListSphere)
+                {
+                    sphere.gameObject.SetActive(false);
+                }
                 tempListSphere.Clear();
                 StartCoroutine(OnSphere());
             }
@@ -121,7 +125,7 @@ public class ThreeInARow : MonoBehaviour
             addSphere = true;
         }
     }
-    
+
     void SearchNearestSphere(Transform startPosition, int layer)
     {
         tempListSphere.Add(startPosition);
@@ -146,10 +150,7 @@ public class ThreeInARow : MonoBehaviour
                 }
             }
         }
-        foreach (var sphere in tempListSphere)
-        {
-            sphere.gameObject.SetActive(false);
-        }
+
     }
     public void Exit()
     {
