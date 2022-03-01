@@ -77,7 +77,6 @@ public class ManualList : MonoBehaviour
         // {
         //     text1.text += "Не удалось изменить элемент\n";
         // }
-
         // try
         // {
         //     listReadOnly.Add(5);
